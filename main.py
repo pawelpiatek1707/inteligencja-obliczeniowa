@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import random
 import json
 
@@ -24,3 +25,9 @@ for id in range(100):
 with open('data/data.json', 'w') as f:
     json.dump(points_arr, f)
 
+=======
+from modules.warehouse_generator import generate_warehouse_data
+
+
+print(generate_warehouse_data())
+>>>>>>> main
