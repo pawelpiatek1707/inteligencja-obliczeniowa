@@ -1,6 +1,9 @@
+from random import sample
+
+
 class Car:
     def __init__(self):
-        self._max_capacity: int = 1000
+        self._max_capacity: int = sample([1000, 1500, 2000], k=1)
         self._load: int = self._max_capacity
 
     @property
