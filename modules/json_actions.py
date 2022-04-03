@@ -7,3 +7,11 @@ def generate_json():
 
     with open('data/data.json', 'w') as f:
         json.dump(warehouse, f)
+        f.close()
+
+def read_json():
+    f = open('data/data.json')
+
+    data = json.load(f)
+    f.close()
+    return data
