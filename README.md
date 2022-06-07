@@ -1,5 +1,5 @@
 # Inteligencja obliczeniowa
-## Projekt zaliczeniowy, Informatyka, Niestacjonarne, Rok akademicki 2021 / 2022
+## Informatyka, Niestacjonarne, Rok akademicki 2021 / 2022
 
 ### Autorzy projektu
 
