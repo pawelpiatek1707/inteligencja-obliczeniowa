@@ -39,7 +39,8 @@ def generate_warehouse_data() -> list[dict[str, int]]:
             "x": random.randint(0, 100),
             "y": random.randint(0, 100),
             "products_to_receive": receive,
-            "products_to_ship": ship
+            "products_to_ship": ship,
+            "storage": False
         })
 
     return search_duplicates_and_regenerate(warehouse)
@@ -52,7 +53,8 @@ def generate_storage_warehouse_data() -> list[dict[str, int]]:
         warehouse.append({
             "id": i,
             "x": random.randint(0, 100),
-            "y": random.randint(0, 100)
+            "y": random.randint(0, 100),
+            "storage": True
         })
 
     return search_duplicates_and_regenerate(warehouse)
