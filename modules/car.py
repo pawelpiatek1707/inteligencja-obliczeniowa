@@ -9,8 +9,9 @@ class Car:
         nums: str = '0123456789'
         self._max_capacity: int = sample([1000, 1500, 2000], k=1)[0]
         self._load: int = 0
-        self._plates_number = ''.join([random.choice(chars) for i in range(2)]+[random.choice(nums) for i in range(5)])
-        self._start_warehouse = random.randint(0, 4)
+        self._plates_number: str = ''.join([random.choice(chars) for i in range(2)]+[random.choice(nums) for i in range(5)])
+        self._start_warehouse: int = random.randint(0, 4)
+        self._current_location_id: int = -1
 
     def __str__(self):
         color: str = "zielony"
@@ -23,7 +24,20 @@ class Car:
                ", kolor: " + color + \
                ", magazyn ID: " + str(self._start_warehouse) + \
                ", pojemność: " + str(self._max_capacity) + " kg" + \
-               ", ładunek: " + str(self._load) + " kg"
+               ", ładunek: " + str(self._load) + " kg" + \
+               ", aktualnie w punkcie ID: " + str(self._current_location_id)
+
+    @property
+    def start_warehouse(self):
+        return self._start_warehouse
+
+    @property
+    def current_location_id(self):
+        return self._current_location_id
+
+    @current_location_id.setter
+    def current_location_id(self, value: int):
+        self._current_location_id = value
 
     @property
     def max_capacity(self) -> int:

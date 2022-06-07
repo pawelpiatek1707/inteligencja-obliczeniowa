@@ -20,3 +20,7 @@ class CarsCollection:
         for i in range(randint(3, 6)):
             cars[i] = Car()
         return cars
+
+    def place_in_start_warehouses(self) -> None:
+        for car_id in self._cars:
+            self._cars[car_id].current_location_id = self._cars[car_id].start_warehouse
