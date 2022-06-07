@@ -12,6 +12,7 @@ class Car:
         self._plates_number: str = ''.join([random.choice(chars) for i in range(2)]+[random.choice(nums) for i in range(5)])
         self._start_warehouse: int = random.randint(0, 4)
         self._current_location_id: int = -1
+        self._car_path: list[dict[str, int]] = [{}]
 
     def __str__(self):
         color: str = "zielony"
@@ -55,14 +56,37 @@ class Car:
     def load(self, value: int) -> None:
         self._load = value
 
+    def add_path_log(self, point: dict[str, int], loaded: int, unloaded: int) -> None:
+        if loaded > 0:
+            self.add_load(loaded)
+        if unloaded > 0:
+            self.reduce_load(unloaded)
+
+        item: dict = {
+            "x": point["x"],
+            "y": point["y"],
+            "loaded": loaded,
+            "unloaded": unloaded,
+            "load": self._load,
+            "capacity": self._max_capacity,
+            "left_demand": point["products_to_receive"] if "products_to_receive" in point else 0,
+            "left_supply": point["products_to_ship"] if "products_to_ship" in point else 0,
+            "is_storage": point["storage"]
+        }
+
+        self._car_path.append(item)
+        print(f'[samochód-{self._plates_number}] udał się do punktu: ' + str(item))
+
     def add_load(self, load_to_add: int) -> None:
         load_after_add = self._load + load_to_add
-        assert load_after_add < self.max_capacity, \
-            f'[samochód] pojemność po załadowaniu {load_after_add} kg, a dopuszczalna {self.max_capacity} kg'
+        assert load_after_add <= self.max_capacity, \
+            f'[samochód-{self._plates_number}] pojemność po załadowaniu {load_after_add} kg, ' + \
+            f'a dopuszczalna {self.max_capacity} kg'
         self._load = load_after_add
 
     def reduce_load(self, load_to_reduce: int) -> None:
         load_after_reduce = self._load + load_to_reduce
-        assert load_after_reduce > 0, \
-            f'[samochód] pojemność po rozładowaniu {load_after_reduce} kg, więc rozładowano więcej niż było można'
+        assert load_after_reduce >= 0, \
+            f'[samochód-{self._plates_number}] pojemność po rozładowaniu {load_after_reduce} kg, ' + \
+            f'więc rozładowano więcej niż było można'
         self._load = load_after_reduce

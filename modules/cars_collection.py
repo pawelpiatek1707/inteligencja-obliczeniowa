@@ -15,6 +15,14 @@ class CarsCollection:
 
         return str(car_list)
 
+    @property
+    def cars(self):
+        return self._cars
+
+    @cars.setter
+    def cars(self, value: dict):
+        self._cars = value
+
     def generate_cars(self) -> dict:
         cars = {}
         for i in range(randint(3, 6)):

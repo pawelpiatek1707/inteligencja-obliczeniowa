@@ -11,3 +11,4 @@ warehouse_all_locations: list[dict[str, int]] = warehouse_storage_data + warehou
 company_cars: CarsCollection = CarsCollection()
 company_cars.place_in_start_warehouses()
 path_manager: PathManager = PathManager(warehouse_all_locations, company_cars)
+path_manager.solve_problem()
