@@ -10,6 +10,7 @@ class Car:
         self._max_capacity: int = sample([1000, 1500, 2000], k=1)[0]
         self._load: int = 0
         self._plates_number = ''.join([random.choice(chars) for i in range(2)]+[random.choice(nums) for i in range(5)])
+        self._start_warehouse = random.randint(0, 4)
 
     def __str__(self):
         color: str = "zielony"
@@ -20,6 +21,7 @@ class Car:
 
         return "[samochód] rejestracja: " + self._plates_number + \
                ", kolor: " + color + \
+               ", magazyn ID: " + str(self._start_warehouse) + \
                ", pojemność: " + str(self._max_capacity) + " kg" + \
                ", ładunek: " + str(self._load) + " kg"
 
