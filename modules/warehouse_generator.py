@@ -43,3 +43,16 @@ def generate_warehouse_data() -> list[dict[str, int]]:
         })
 
     return search_duplicates_and_regenerate(warehouse)
+
+
+def generate_storage_warehouse_data() -> list[dict[str, int]]:
+    warehouse: list[dict[str, int]] = []
+
+    for i in range(5):
+        warehouse.append({
+            "id": i,
+            "x": random.randint(0, 100),
+            "y": random.randint(0, 100)
+        })
+
+    return search_duplicates_and_regenerate(warehouse)
