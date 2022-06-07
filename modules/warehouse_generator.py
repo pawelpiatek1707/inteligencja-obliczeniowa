@@ -35,7 +35,7 @@ def generate_warehouse_data() -> list[dict[str, int]]:
             ship: int = 0
 
         warehouse.append({
-            "id": i,
+            "id": i + 5,
             "x": random.randint(0, 100),
             "y": random.randint(0, 100),
             "products_to_receive": receive,
