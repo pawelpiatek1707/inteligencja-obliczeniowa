@@ -75,6 +75,8 @@ class PathManager:
 
     def find_warehouse_with_condition(self, decision: dict[str, bool], position_id: int) -> int:
         contest: list[dict[str, int]] = []
+        minimum: int = 1000
+        minimum_id: int = 0
 
         if decision["should_return"]:
             for warehouse in self._warehouse_data:
@@ -83,18 +85,35 @@ class PathManager:
                         "id": str(warehouse["id"]),
                         "distance": self.calculate_distance(warehouse, self._warehouse_data[position_id])
                     })
+        else:
+            if decision["can_deliver"]:
+                for warehouse in self._warehouse_data:
+                    if warehouse["storage"]:
+                        continue
+                    if warehouse["products_to_receive"] > 0:
+                        distance: int = self.calculate_distance(warehouse, self._warehouse_data[position_id])
+                        contest.append({
+                            "id": str(warehouse["id"]),
+                            "distance": distance / 2 if decision["should_deliver"] else distance
+                        })
 
-            minimum: int = 1000
-            minimum_id : int = 0
+            if decision["can_recharge"]:
+                for warehouse in self._warehouse_data:
+                    if warehouse["storage"]:
+                        continue
+                    if warehouse["products_to_ship"] > 0:
+                        distance: int = self.calculate_distance(warehouse, self._warehouse_data[position_id])
+                        contest.append({
+                            "id": str(warehouse["id"]),
+                            "distance": distance / 3 if decision["should_recharge"] else distance
+                        })
 
-            for item in contest:
-                if item["distance"] < minimum:
-                    minimum = item["distance"]
-                    minimum_id = item["id"]
+        for item in contest:
+            if item["distance"] < minimum:
+                minimum = item["distance"]
+                minimum_id = item["id"]
 
-            return minimum_id
-
-        return 0
+        return minimum_id
 
     def solve_problem(self) -> None:
         self.place_cars_in_start_locations()
