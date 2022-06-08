@@ -157,3 +157,8 @@ class PathManager:
         for car in self._cars_data.cars:
             if self._cars_data.cars[car].current_location_id != 0:
                 self._cars_data.cars[car].add_path_log(self._warehouse_data[0], 0, self._cars_data.cars[car].load)
+
+        print("[trasa] pojazdy zakończyły pracę i wykonały następującą trasę")
+
+        for car in self._cars_data.cars:
+            print(self._cars_data.cars[car].get_path_log())

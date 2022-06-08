@@ -1,5 +1,6 @@
 import random
 
+from math import sqrt
 from random import sample
 
 
@@ -12,7 +13,7 @@ class Car:
         self._plates_number: str = ''.join([random.choice(chars) for i in range(2)]+[random.choice(nums) for i in range(5)])
         self._start_warehouse: int = random.randint(0, 4)
         self._current_location_id: int = -1
-        self._car_path: list[dict[str, int]] = [{}]
+        self._car_path: list[dict[str, int]] = []
 
     def __str__(self):
         color: str = "zielony"
@@ -59,6 +60,26 @@ class Car:
     @load.setter
     def load(self, value: int) -> None:
         self._load = value
+
+    def calculate_distance(self, point_a: dict[str, int], point_b: dict[str, int]) -> int:
+        dist_x: int = abs(point_a["x"] - point_b["x"])
+        dist_y: int = abs(point_a["y"] - point_b["y"])
+        return int(sqrt(dist_x**2 + dist_y**2))
+
+    def get_path_log(self) -> str:
+        total_km: int = 0
+        last_point = None
+
+        for item in self._car_path:
+            if last_point is None:
+                last_point = item
+                continue
+            total_km += self.calculate_distance(last_point, item)
+            last_point = item
+
+        return f'[samochód-{self._plates_number}] pokonał trasę: ' + \
+            '-'.join(str(item["id"]) for item in self._car_path) + \
+            ' -> dystans: ' + str(total_km) + ' km'
 
     def add_path_log(self, point: dict[str, int], loaded: int, unloaded: int) -> None:
         if loaded > 0:
