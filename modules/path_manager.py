@@ -73,6 +73,29 @@ class PathManager:
                 "should_return": True
             }
 
+    def find_warehouse_with_condition(self, decision: dict[str, bool], position_id: int) -> int:
+        contest: list[dict[str, int]] = []
+
+        if decision["should_return"]:
+            for warehouse in self._warehouse_data:
+                if warehouse["storage"]:
+                    contest.append({
+                        "id": str(warehouse["id"]),
+                        "distance": self.calculate_distance(warehouse, self._warehouse_data[position_id])
+                    })
+
+            minimum: int = 1000
+            minimum_id : int = 0
+
+            for item in contest:
+                if item["distance"] < minimum:
+                    minimum = item["distance"]
+                    minimum_id = item["id"]
+
+            return minimum_id
+
+        return 0
+
     def solve_problem(self) -> None:
         self.place_cars_in_start_locations()
 
@@ -82,3 +105,9 @@ class PathManager:
             for car in self._cars_data.cars:
                 decision: dict[str, bool] = self.decision_making_rules(self._cars_data.cars[car])
                 print(f"[samochód-{self._cars_data.cars[car].plates_number}] podejmuje decyzję: " + str(decision))
+                destination_id: int = self.find_warehouse_with_condition(decision,
+                    self._cars_data.cars[car].current_location_id)
+                destination: dict[str, int] = self._warehouse_data[int(destination_id)]
+                self._cars_data.cars[car].add_path_log(destination, 0, 0)
+
+            break
