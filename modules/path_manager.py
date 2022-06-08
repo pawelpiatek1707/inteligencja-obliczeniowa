@@ -2,6 +2,7 @@ from math import sqrt
 
 from modules.cars_collection import CarsCollection
 from modules.car import Car
+from modules.vizualization import display_car_path
 
 
 class PathManager:
@@ -162,3 +163,4 @@ class PathManager:
 
         for car in self._cars_data.cars:
             print(self._cars_data.cars[car].get_path_log())
+            display_car_path(self._cars_data.cars[car].get_path())

@@ -66,6 +66,9 @@ class Car:
         dist_y: int = abs(point_a["y"] - point_b["y"])
         return int(sqrt(dist_x**2 + dist_y**2))
 
+    def get_path(self) -> list[dict[str, int]]:
+        return self._car_path
+
     def get_path_log(self) -> str:
         total_km: int = 0
         last_point = None
