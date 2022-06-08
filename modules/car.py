@@ -29,6 +29,10 @@ class Car:
                ", aktualnie w punkcie ID: " + str(self._current_location_id)
 
     @property
+    def plates_number(self):
+        return self._plates_number
+
+    @property
     def start_warehouse(self):
         return self._start_warehouse
 
@@ -63,6 +67,7 @@ class Car:
             self.reduce_load(unloaded)
 
         item: dict = {
+            "id": point["id"],
             "x": point["x"],
             "y": point["y"],
             "loaded": loaded,
@@ -74,6 +79,7 @@ class Car:
             "is_storage": point["storage"]
         }
 
+        self._current_location_id = point["id"]
         self._car_path.append(item)
         print(f'[samochód-{self._plates_number}] udał się do punktu: ' + str(item))
 
