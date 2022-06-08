@@ -91,7 +91,7 @@ class Car:
         self._load = load_after_add
 
     def reduce_load(self, load_to_reduce: int) -> None:
-        load_after_reduce = self._load + load_to_reduce
+        load_after_reduce = self._load - load_to_reduce
         assert load_after_reduce >= 0, \
             f'[samochód-{self._plates_number}] pojemność po rozładowaniu {load_after_reduce} kg, ' + \
             f'więc rozładowano więcej niż było można'

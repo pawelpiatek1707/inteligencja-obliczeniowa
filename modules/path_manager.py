@@ -115,6 +115,21 @@ class PathManager:
 
         return minimum_id
 
+    def calculate_load_unload(self, point_id: int, car_id: int) -> tuple[int, int]:
+        warehouse: dict[str, int] = self._warehouse_data[point_id]
+        car: Car = self._cars_data.cars[car_id]
+
+        if warehouse["storage"]:
+            return car.max_capacity - car.load, 0
+
+        if warehouse["products_to_receive"] > 0:
+            return 0, warehouse["products_to_receive"]
+
+        if warehouse["products_to_ship"] > 0:
+            return warehouse["products_to_ship"], 0
+
+        return 0, 0
+
     def solve_problem(self) -> None:
         self.place_cars_in_start_locations()
 
@@ -124,9 +139,21 @@ class PathManager:
             for car in self._cars_data.cars:
                 decision: dict[str, bool] = self.decision_making_rules(self._cars_data.cars[car])
                 print(f"[samochód-{self._cars_data.cars[car].plates_number}] podejmuje decyzję: " + str(decision))
-                destination_id: int = self.find_warehouse_with_condition(decision,
-                    self._cars_data.cars[car].current_location_id)
-                destination: dict[str, int] = self._warehouse_data[int(destination_id)]
-                self._cars_data.cars[car].add_path_log(destination, 0, 0)
+                destination_id: int = int(self.find_warehouse_with_condition(decision,
+                    self._cars_data.cars[car].current_location_id))
+                destination: dict[str, int] = self._warehouse_data[destination_id]
+                load, unload = self.calculate_load_unload(destination_id, car)
+                if not destination["storage"]:
+                    self._warehouse_data[destination_id]["products_to_ship"] -= load
+                    self._warehouse_data[destination_id]["products_to_receive"] -= unload
+                    destination: dict[str, int] = self._warehouse_data[destination_id]
+                if destination_id == 0:
+                    self._cars_data.cars[car].add_path_log(destination, 0, self._cars_data.cars[car].load / 2)
+                else:
+                    self._cars_data.cars[car].add_path_log(destination, load, unload)
 
-            break
+        print("[trasa] wszystkie magazyny obsłużone, pojazdy wracają do magazynów")
+
+        for car in self._cars_data.cars:
+            if self._cars_data.cars[car].current_location_id != 0:
+                self._cars_data.cars[car].add_path_log(self._warehouse_data[0], 0, self._cars_data.cars[car].load)
