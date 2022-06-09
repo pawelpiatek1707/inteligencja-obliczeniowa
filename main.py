@@ -1,6 +1,6 @@
 from modules.warehouse_generator import generate_warehouse_data
 from modules.warehouse_generator import generate_storage_warehouse_data
-from modules.vizualization import display_points_plot, display_road, display_multiple_roads
+from modules.vizualization import display_points_plot
 from modules.cars_collection import CarsCollection
 from modules.path_manager import PathManager
 

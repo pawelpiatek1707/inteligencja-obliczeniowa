@@ -38,7 +38,13 @@ def display_car_path(data):
 
 
 def display_road(data):
-    df = pd.DataFrame(data)
+    global warehouse_data
+    global storage_data
+    df = warehouse_data
+    df2 = storage_data
+    x, y = df['x'], df['y']
+    x2, y2 = df2['x'], df2['y']
+
     fig, ax = plt.subplots()
 
     x_data = []
@@ -52,10 +58,12 @@ def display_road(data):
         if i < len(data):
             x_data.append(data[i]['x'])
             y_data.append(data[i]['y'])
-            plt.plot(x_data,y_data, color="blue")
+            plt.plot(x_data,y_data, color="black")
 
 
     ani = FuncAnimation(fig, animation_frame, frames=len(data), interval=100, repeat=False)
+    plt.plot(x, y, 'bo')
+    plt.plot(x2, y2, 'ro')
     plt.show()
 
 
@@ -66,17 +74,19 @@ def return_random_color():
 
 def display_multiple_roads(data):
 
+    global warehouse_data
+    global storage_data
+    df = warehouse_data
+    df2 = storage_data
+    x, y = df['x'], df['y']
+    x2, y2 = df2['x'], df2['y']
+
     colors_list = ['FE0002', 'F9941E', 'FFFF01', '00FF03', '000000', '642D92']
 
-    plt.figure(figsize=(20, 15))
-    plt.title("Wizualizacja trasy przejazdu")
-    full_list = sum(data, [])
-    full_list_df = pd.DataFrame(full_list)
-    x, y = full_list_df['x'], full_list_df['y']
-    plt.plot(x,y, 'bo')
-
+    plt.figure(figsize=(15, 10))
+    plt.title("Wizualizacja tras przejazdów")
     for index, row in enumerate(data):
-        df = pd.DataFrame(row)
+        df = pd.DataFrame(data[row].get_path())
         x_array = df['x']
         y_array = df['y']
 
@@ -88,7 +98,8 @@ def display_multiple_roads(data):
 
         plt.plot(x_array,y_array, color=f"#{random_color}")
 
-
+    plt.plot(x, y, 'bo')
+    plt.plot(x2, y2, 'ro')
     plt.show()
 
 
